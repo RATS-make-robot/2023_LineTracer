@@ -10,3 +10,7 @@ _모터 지지대 강화_
 
 _배터리 위치 이동_
 ![20230302_105735](https://user-images.githubusercontent.com/68770209/226084952-f8f98ebe-845b-4b4d-a9c4-8cc974c7626a.jpg)
+
+- 회로도
+_잘못된 센서 방향 및 저항값 수정_
+![2023_LineTracer_sensors](https://user-images.githubusercontent.com/68770209/226085589-e0334ce4-1ff3-4683-abfc-ae203f36912f.png)
