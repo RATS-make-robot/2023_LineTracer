@@ -1,4 +1,5 @@
 # 2023_LineTracer
+![20230301_155821](https://user-images.githubusercontent.com/68770209/226085467-d1575ad6-2522-4858-9c3e-a1780fda12e6.jpg)
 ![2023_LineTracer_1](https://user-images.githubusercontent.com/68770209/226084867-f8758c74-1c60-4bd4-bbbc-3f401301a493.png)
 
 # 변경사항
