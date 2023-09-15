@@ -1,8 +1,8 @@
-#define MOTOR_OFFSET_LEFT 100
-#define MOTOR_OFFSET_RIGHT 100
+#define MOTOR_OFFSET_LEFT 100  //본인꺼에 맞게 바꿀 값
+#define MOTOR_OFFSET_RIGHT 100 //본인꺼에 맞게 바꿀 값
 
 #define TARGET_LINE 0
-#define kP 7
+#define kP 7  //본인꺼에 맞게 바꿀 값
 
 #define SERIAL //시리얼 안 쓰려면 주석처리하기
 
@@ -80,7 +80,7 @@ void monitoring_sensor() {
   if(line_hex <= B111)Serial.print("0");
   if(line_hex <= B11)Serial.print("0");
   if(line_hex <= B1)Serial.print("0");
-  Serial.println(line_hex, BIN);
+  Serial.print(line_hex, BIN);
 #endif
   PORTD |= 0x7C; //LED전부 끄기
   PORTD &=~ line_hex<<2;//인식된 센서 그대로 LED 켜기
@@ -101,29 +101,35 @@ int curent_line()
 {
   switch(line_hex)
   {
-    case 0x10: return -10;
-    case 0x18: return -3;
+    case B10000: return -4;
+    case B11000: return -3;
     
-    case 0x08: return -2;
-    case 0x0C: return -1;
+    case B01000: return -2;
+    case B01100: return -1;
     
-    case 0x04: return 0;
+    case B00100: return 0;
     
-    case 0x06: return 1;
-    case 0x02: return 2;
+    case B00110: return 1;
+    case B00010: return 2;
     
-    case 0x03: return 3;
-    case 0x01: return 10;
+    case B00011: return 3;
+    case B00001: return 4;
+
+    case B11110: return 100; //교차점 직진
+    case B11111: return 100;
+    case B01111: return 100;
   }
 }
 
 void pControl() {
   int current_line = curent_line();
+  if (current_line == 100) current_line = 0;
   int error = current_line - TARGET_LINE;
   int control_sensor = kP * error;
 #ifdef SERIAL
+  Serial.print("\t속도차이: ");
   Serial.print(control_sensor);
-  Serial.print("\t");
+  Serial.println(" * 2");
 #endif
   motor((MOTOR_OFFSET_LEFT - control_sensor),
         (MOTOR_OFFSET_RIGHT + control_sensor));
