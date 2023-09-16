@@ -1,8 +1,6 @@
 # 2023_LineTracer
 
 2023 RATS 신입생 라인트레이서 프로젝트
-- 작동 모습
-
 <div align=center>
     
 ![ezgif-5-28c73c5a9f](https://github.com/RATS-make-robot/2023_LineTracer/assets/68770209/e446edbc-0c1a-463e-938e-ef72ba596d17)
