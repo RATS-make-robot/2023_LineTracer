@@ -122,7 +122,7 @@ int curent_line() { //센서 정보(line_hex) -> 현재 라인 위치 판별 함
 
 void pControl() { //P제어 함수
   int current_line = curent_line(); //바로 위에 있는 함수인 "curent_line()"에서 return한 값을 
-  if (current_line == 100) current_line = 0;
+  if (current_line == 100) current_line = 0;// 교차점일 때는 중앙으로 인식하고 직진하기 { curent_line()에서 return 0;해도 상관 없음 }
   int error = current_line - TARGET_LINE; //얼마나 중앙에서 벗어났는지 "error" 값 계산
   int control_sensor = kP * error;
 #ifdef SERIAL
