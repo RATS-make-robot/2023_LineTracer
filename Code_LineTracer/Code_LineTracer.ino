@@ -4,39 +4,39 @@
 #define TARGET_LINE 0
 #define kP 7  //본인꺼에 맞게 바꿀 값
 
-#define SERIAL //시리얼 안 쓰려면 주석처리하기
+#define SERIAL //시리얼 통신 안 쓰려면 주석처리하기
 
 const int LED_pin[5] = {6, 5, 4, 3, 2};
 const int sensor_pin[5] = {A0, A1, A2, A3, A4};
 
-const int ENA = 9;
-const int ENB = 10;
-const int IN1 = 7;
+const int ENA = 9;   //모터 ENABLE A 핀
+const int ENB = 10;  //모터 ENABLE B 핀
+const int IN1 = 7;   //왼쪽 모터 방향 핀
 const int IN2 = 8;
-const int IN3 = 11;
+const int IN3 = 11;  //오른쪽 모터 방향 핀
 const int IN4 = 12;
 
-int sensor_value[5] = {0};
-int sensor_standard[5] = {200, 200, 200, 200, 200};
-int line_hex;
+int sensor_value[5] = {0};//센서 값 저장 변수
+int sensor_standard[5] = {200, 200, 200, 200, 200};//센서 기준값 설정 변수(캘리브레이션 사용 X경우)
+int line_hex;//라인 위치 정보 저장 변수
 
-void read_sensor();
-void monitoring_sensor();
-void motor(int left_speed, int right_speed);
-int curent_line();
-void pControl();
+void read_sensor();//센서값 읽어서 "sensor_value"에 저장 후에 -> bit 형식으로 "line_hex"로 저
+void monitoring_sensor();//센서값 정보 -> UART출력 & LED출력 함수
+void motor(int left_speed, int right_speed);//왼쪽/오른쪽 모터 속도 설정 함수
+int curent_line();//센서값 정보 -> 현재 라인 위치 판별 함수
+void pControl();//P제어 함수
 
 void setup() {
 #ifdef SERIAL
   Serial.begin(9600);
 #endif
-    //아트메가의 모든 핀의 기본값은 입력이기 때문에 불필요 하지만 오류를 대비해 pinMode(SENSOR[i], INPUT) 입력
+//아트메가의 모든 핀의 기본값은 입력이기 때문에 불필요 하지만 오류를 대비해 pinMode(SENSOR[i], INPUT) 입력
   for (int i = 0; i < 5; i++) {
-    pinMode(sensor_pin[i], INPUT);
-    pinMode(LED_pin[i], OUTPUT);
-    digitalWrite(LED_pin[i], HIGH);
+    pinMode(sensor_pin[i], INPUT);//모든 센서는 INPUT으로 설정
+    pinMode(LED_pin[i], OUTPUT);//모든 LED는 OUTPUT으로 설정
+    digitalWrite(LED_pin[i], HIGH);//모든 LED의 초기값은 HIGH로 설정 -> sink 전류로 동작하기 때문
   }
-  pinMode(ENA, OUTPUT);
+  pinMode(ENA, OUTPUT);//모터 드라이버로 가는 핀들은 모두 OUTPUT
   pinMode(ENB, OUTPUT);
   
   pinMode(IN1, OUTPUT);
@@ -46,13 +46,13 @@ void setup() {
 }
 
 void loop() {
-  read_sensor();
-  monitoring_sensor();
-  pControl();
+  read_sensor();//센서값을 읽고
+  monitoring_sensor();//센서값을 UART & LED5개로 출력하고
+  pControl();//그 센서값(라인 위치)에 따라 모터 속도 제어
 }
 /*********************************************************/
 void read_sensor() {
-  for (int i = 0; i < 5; i++)
+  for (int i = 0; i < 5; i++)//센서값 읽어서 "sensor_value"에 저장
     sensor_value[i] = analogRead(sensor_pin[i]);
 
   line_hex = 0;
